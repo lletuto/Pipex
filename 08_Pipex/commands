@@ -1,0 +1,64 @@
+MANDATORY
+
+fonctionnement normal :
+
+< infiles/file wc -l | ls -l > outfiles/outfile
+./pipex infiles/file "wc -l" "ls -l" outfiles/outfile
+
+mauvais nombre d'arguments :
+
+./pipex infiles/file "wc -l" outfiles/outfile
+
+commande inexistante : 
+
+< infiles/file badcmd | wc -l > outfiles/outfile
+./pipex infiles/file "badcmd" "wc -l" outfiles/outfile
+
+
+fichier infile n'existe pas :
+
+< file wc -l | ls -l > outfiles/outfile
+./pipex file "wc -l" "ls -l" outfiles/outfile
+
+fichier infile sans permission :
+
+< infiles/nopermission wc -l | ls -l > outfiles/outfile
+./pipex infiles/nopermission "wc -l" "ls -l" outfiles/outfile
+
+fichier outfile  sans permission : 
+
+< infiles/file wc -l | ls -l > outfiles/nopermission
+./pipex infiles/file "wc -l" "ls -l" outfiles/nopermission
+
+temps de realisation : 
+
+time < infiles/file sleep 4 | sleep 2 > outfiles/outfile
+time ./pipex infiles/file "sleep 4" "sleep 2" outfiles/outfile
+
+commande avec espace dans les arguments
+
+< infiles/file grep "valse des" | wc -l > outfiles/outfile
+./pipex infiles/file "grep 'valse des'" "wc -l" outfiles/outfile
+
+BONUS
+
+< infiles/file grep valse | sort | wc -l > outfiles/outfile
+./pipex_bonus infiles/file "grep valse" "sort" "wc -l" outfiles/outfile
+
+fichier d'entree manquant
+
+< nofile grep valse | sort | wc -l > outfile
+./pipex_bonus nofile "grep valse" "sort" "wc -l" outfile
+
+avec 4 commandes
+
+< infiles/file grep valse | sort | uniq | wc -l > outfiles/outfile
+./pipex_bonus infiles/file "grep valse" "sort" "uniq" "wc -l" outfiles/outfile
+
+avec commande longue
+
+< infiles/file awk '{print $1}' | sort | uniq -c | sort -nr > outfiles/outfile
+./pipex_bonus infiles/file "awk '{print \$1}'" "sort" "uniq -c" "sort -nr"  outfiles/outfile
+
+./pipex_bonus infiles/file "" "wc -l" outfiles/outfile
+
